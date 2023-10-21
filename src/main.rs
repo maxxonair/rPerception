@@ -7,25 +7,27 @@ use image::{self, GrayImage, ImageBuffer, RgbImage};
 use image::GenericImageView; 
 use std::{thread, time};
 use std::time::{Duration, Instant};
+use std::env;
 
-use crate::perception::perceptor::{create_disparity_map};
+use crate::perception::perceptor::create_disparity_map;
 use crate::io::save::save_gray_image_to_file;
-
-
 
 
 /*
 IMAGE row - column convention
-----------------> [ii]
+----------------> X [ii]
 |
 |
 |
 v
+Y
 [jj]
 */
 
 
 fn main() {
+    /* Enable backtrace */
+    env::set_var("RUST_BACKTRACE", "full");
     println!("-----------------------------");
     println!("--  PERCEPTION MODEL mk.0  --");
     println!("-----------------------------");
@@ -77,13 +79,18 @@ fn main() {
     /* ---------------------------------------------------------------------- */
     /*                  [create disparity map]                                */
     /* ---------------------------------------------------------------------- */
+    println!(" [start creating disparity map ] ");
+    println!("  V");
+    println!("  V");
+    println!("  V");
     /* Loop over image rows */
     let start_correlation = Instant::now();
 
     let disparity_map: GrayImage = create_disparity_map(&img_left,
                                                        &img_right);
-
-    println!(" Time to create disparity map: {:?} [ms] ", start_correlation.elapsed().as_millis());
+    
+    println!(" Time to create disparity map: {:?} [ms] ",
+        start_correlation.elapsed().as_millis());
     
     /* Save results to file  */
     println!("[x] Saving disparity map to: ./out/disparity.png");
